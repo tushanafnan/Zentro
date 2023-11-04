@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const password = document.getElementById("password").value;
 
         // Fetch user data from the JSON file
-        fetch('/User/users.json')
+        fetch('/user/users.json')
             .then(response => response.json())
             .then(data => {
                 const users = data.users;
