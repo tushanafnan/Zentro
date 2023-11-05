@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="/css/nivo-lightbox.css">
     <link rel="stylesheet" href="/css/nivo_themes/default/default.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/modal.css">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css'>
 </head>
 
@@ -58,7 +59,15 @@
                 <div class="col-md-12 col-sm-12">
                     <h1>ZENTRO RESTAURANT</h1>
                     <h2>ADVANCE CLOUD KITCHEN</h2>
-                    <a href="#gallery" class="smoothScroll btn btn-default">LEARN MORE</a>
+                    <button id="openModalButton">LEARN MORE</button>
+                    <div id="modal" class="modal">
+                        <div class="modal-content">
+                            <span class="close" id="closeModal">&times;</span>
+                            <div id="modal-content">
+                                <!-- Sentences will go here -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -287,12 +296,8 @@
     <script src="/js/nivo-lightbox.min.js"></script>
     <script src="/js/wow.min.js"></script>
     <script src="/js/custom.js"></script>
-    <script type="text/javascript">
-        function showAlertForContact() {
-            if (!alert("Email has Sent Successfully! Our Representative will be notifying you soon!"))
-                document.location = '/stracture/dashboard.html';
-        }
-    </script>
+    <script src="/js/modal.js"></script>
+    <script src="/js/contactModal.js"></script>
 
 
 </body>
