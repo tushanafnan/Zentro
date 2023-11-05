@@ -1,3 +1,18 @@
+/* styles.css */
+
+#openModalButton {
+    background-color: #33ae95;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#openModalButton:hover {
+    background-color: #0056b3;
+}
+
 .modal {
     display: none;
     position: fixed;
@@ -11,7 +26,7 @@
 }
 
 .modal-content {
-    background-color: #fff;
+    background-color: #F2F2F2;
     margin: 10% auto;
     padding: 20px;
     width: 80%;
@@ -21,15 +36,35 @@
     position: relative;
 }
 
-.close {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 10px;
-    cursor: pointer;
+.modal-text-container {
+    max-height: 300px;
+    overflow: auto;
 }
 
-#modal-content {
-    max-height: 100%;
-    overflow-y: auto;
+.modal-text {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    text-align: left;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.modal-text h1 {
+    font-size: 24px;
+    color: #007BFF;
+}
+
+.modal-text h2 {
+    font-size: 20px;
+    color: #007BFF;
+}
+
+.modal-text ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    color: #555;
 }
