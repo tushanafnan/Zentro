@@ -9,7 +9,7 @@
 <body>
     <div id="signup-container">
         <h1>Sign Up</h1>
-        <form id="signup-form">
+        <form id="login-form">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required><br>
 
@@ -20,7 +20,7 @@
             <input type="text" id="email" name="email" required><br>
 
             <label for="password">Password:</label>
-            <input type="password" id="signup-password" name="signup-password" required><br>
+            <input type="password" id="password" name="signup-password" required><br>
 
             <label for="phone">Phone Number:</label>
             <input type="text" id="phone" name="phone" required><br>
@@ -33,7 +33,13 @@
         </form>
         <p id="signup-message"></p>
     </div>
-    <script src="/js/signup.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script src="/firebase/firebaseConfig.js"></script>
+    <script src="/js/login.js"></script>
+    <!-- Add other Firebase services you plan to use -->
+
 </body>
 
 </html>
