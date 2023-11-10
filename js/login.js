@@ -1,29 +1,32 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const loginForm = document.getElementById("login-form");
-    const message = document.getElementById("message");
+// Initialize Firebase after including the configuration
+firebase.initializeApp(firebaseConfig);
 
-    loginForm.addEventListener("submit", function(e) {
-        e.preventDefault();
+// Get references to the login form elements
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+const loginForm = document.getElementById('login-form');
+const message = document.getElementById('message');
 
-        // Retrieve user input
-        const username = document.getElementById("username").value;
-        const password = document.getElementById("password").value;
+// Add an event listener to the form for login
+loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
 
-        // Fetch user data from the JSON file
-        fetch('/user/users.json')
-            .then(response => response.json())
-            .then(data => {
-                const users = data.users;
-                const user = users.find(u => u.username === username && u.password === password);
-                if (user) {
-                    // Redirect to the dashboard on successful login
-                    window.location.href = "/stracture/dashboard.html";
-                } else {
-                    message.textContent = "Login failed. Please check your username and password.";
-                }
-            })
-            .catch(error => {
-                message.textContent = "An error occurred while fetching user data.";
-            });
-    });
+    const email = emailInput.value;
+    const password = passwordInput.value;
+
+    // Sign in with email and password
+    firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            // User is signed in.
+            const user = userCredential.user;
+
+            // Redirect to the dashboard or perform other actions
+            window.location.href = '/stracture/dashboard.html';
+        })
+        .catch((error) => {
+            // Handle errors here (e.g., display an error message)
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            message.textContent = `Login Error: ${errorMessage}`;
+        });
 });
