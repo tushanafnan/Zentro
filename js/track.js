@@ -11,6 +11,7 @@ firebase.auth().onAuthStateChanged(function(user) {
         console.log('Authenticated User ID:', userId);
 
         // Retrieve and display order details for the user
+        // Inside the onAuthStateChanged listener
         ordersRef.orderByChild('userId').equalTo(userId).on('value', function(snapshot) {
             orderDetailsContainer.innerHTML = ''; // Clear previous order details
 
@@ -22,18 +23,22 @@ firebase.auth().onAuthStateChanged(function(user) {
                     // Set default order status to "Preparing" if undefined
                     const orderStatus = order.status || 'Preparing';
 
+                    // Check if the buttons are disabled and update UI accordingly
+                    const cancelDisabled = order.disabledButtons && order.disabledButtons.cancelOrder;
+                    const receivedDisabled = order.disabledButtons && order.disabledButtons.markAsReceived;
+
                     const orderElement = document.createElement('div');
                     orderElement.id = childSnapshot.key; // Set a unique ID for the order element
                     orderElement.className = 'card mb-3';
                     orderElement.innerHTML = `
-                        <div class="card-body">
-                            <h5 class="card-title">Order ID: ${childSnapshot.key}</h5>
-                            <p class="card-text"><strong>Total Items:</strong> ${order.items.length}</p>
-                            <p class="card-text"><strong>Total Price:</strong> $${order.total}</p>
-                            <p class="card-text" style="color: ${getStatusColor(orderStatus)};"><strong>Order Status:</strong> ${orderStatus}</p>
-                            <h6 class="card-subtitle mb-2 text-muted">Ordered Items:</h6>
-                        </div>
-                    `;
+                <div class="card-body">
+                    <h5 class="card-title">Order ID: ${childSnapshot.key}</h5>
+                    <p class="card-text"><strong>Total Items:</strong> ${order.items.length}</p>
+                    <p class="card-text"><strong>Total Price:</strong> $${order.total}</p>
+                    <p class="card-text" style="color: ${getStatusColor(orderStatus)};"><strong>Order Status:</strong> ${orderStatus}</p>
+                    <h6 class="card-subtitle mb-2 text-muted">Ordered Items:</h6>
+                </div>
+            `;
                     orderDetailsContainer.appendChild(orderElement);
 
                     const orderedItemsList = document.createElement('ul');
@@ -43,23 +48,23 @@ firebase.auth().onAuthStateChanged(function(user) {
                         const orderedItemElement = document.createElement('li');
                         orderedItemElement.className = 'list-group-item';
                         orderedItemElement.innerHTML = `
-                            <p><strong>${item.name}</strong></p>
-                            <p><strong>Price:</strong> $${item.price.toFixed(2)}</p>
-                            <p><strong>Quantity:</strong> ${item.quantity}</p>
-                        `;
+                    <p><strong>${item.name}</strong></p>
+                    <p><strong>Price:</strong> $${item.price.toFixed(2)}</p>
+                    <p><strong>Quantity:</strong> ${item.quantity}</p>
+                `;
                         orderedItemsList.appendChild(orderedItemElement);
                     });
 
                     orderElement.appendChild(orderedItemsList);
 
-                    // Add "Cancel Order" and "Received" buttons
+                    // Add "Cancel Order" and "Received" buttons with disabled status
                     const buttonContainer = document.createElement('div');
                     buttonContainer.className = 'mb-3';
                     buttonContainer.innerHTML = `
-                        <button class="btn btn-danger cancel-order-btn" data-order-id="${childSnapshot.key}">Cancel Order</button>
-                        <button class="btn btn-success received-btn" data-order-id="${childSnapshot.key}">Received</button>
-                        <button class="btn btn-warning delete-order-btn" data-order-id="${childSnapshot.key}">Delete Order</button>
-                    `;
+                <button class="btn btn-danger cancel-order-btn" data-order-id="${childSnapshot.key}" ${cancelDisabled ? 'disabled' : ''}>Cancel Order</button>
+                <button class="btn btn-success received-btn" data-order-id="${childSnapshot.key}" ${receivedDisabled ? 'disabled' : ''}>Received</button>
+                <button class="btn btn-warning delete-order-btn" data-order-id="${childSnapshot.key}">Delete Order</button>
+            `;
                     orderElement.appendChild(buttonContainer);
                 });
             } else {
@@ -75,13 +80,33 @@ firebase.auth().onAuthStateChanged(function(user) {
 // Add event listeners for the buttons dynamically
 document.addEventListener('click', function(event) {
     if (event.target && event.target.classList.contains('cancel-order-btn')) {
-        cancelOrder(event.target.dataset.orderId);
+        const orderId = event.target.dataset.orderId;
+        cancelOrder(orderId);
+        // Disable the "Received" button
+        disableButton(orderId, 'received-btn');
     } else if (event.target && event.target.classList.contains('received-btn')) {
-        markAsReceived(event.target.dataset.orderId);
+        const orderId = event.target.dataset.orderId;
+        markAsReceived(orderId);
+        // Disable the "Cancel Order" button
+        disableButton(orderId, 'cancel-order-btn');
     } else if (event.target && event.target.classList.contains('delete-order-btn')) {
         deleteOrder(event.target.dataset.orderId);
     }
 });
+
+// Function to get the order status from the UI element
+function getOrderStatus(element) {
+    return element.innerText.split(':')[1].trim();
+}
+
+// Function to disable a button based on its class and order ID
+function disableButton(orderId, buttonClass) {
+    const orderElement = document.getElementById(orderId);
+    const button = orderElement.querySelector(`.${buttonClass}`);
+    if (button) {
+        button.disabled = true;
+    }
+}
 
 // Function to get status color based on order status
 function getStatusColor(status) {
@@ -128,10 +153,20 @@ function updateOrderStatus(orderId, newStatus) {
 
 // Function to cancel an order
 function cancelOrder(orderId) {
+    const buttonsToDisable = { cancelOrder: true, markAsReceived: true };
     updateOrderStatus(orderId, 'Cancelled');
+    updateDisabledButtons(orderId, buttonsToDisable);
 }
+
 
 // Function to mark an order as received
 function markAsReceived(orderId) {
     updateOrderStatus(orderId, 'Delivered');
+    updateDisabledButtons(orderId, { markAsReceived: true });
+}
+
+// Function to update the disabled buttons in the database
+function updateDisabledButtons(orderId, buttons) {
+    const orderRef = ordersRef.child(orderId);
+    orderRef.child('disabledButtons').update(buttons);
 }
