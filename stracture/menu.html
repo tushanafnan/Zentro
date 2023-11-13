@@ -4,80 +4,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zentro | Food Gallary</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="keywords" content="">
-    <meta name="description" content="">
-
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <title>Zentro | Menu</title>
+    <style>
+        .stars {
+            color: #ffd700;
+        }
+    </style>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/menu.css">
     <link rel="stylesheet" href="/css/animate.min.css">
     <link rel="stylesheet" href="/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/nivo-lightbox.css">
     <link rel="stylesheet" href="/css/nivo_themes/default/default.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css'>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
 </head>
 
 <body>
-    <section class="navbar navbar-default navbar-fixed-top" role="navigation">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             <div class="navbar-header">
-                <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-				<span class="icon icon-bar"></span>
-				<span class="icon icon-bar"></span>
-				<span class="icon icon-bar"></span>
-			</button>
+                <span class="icon icon-bar"></span>
+                <span class="icon icon-bar"></span>
+                <span class="icon icon-bar"></span>
+                </button>
                 <a href="/stracture/dashboard.html" class="navbar-brand">ZENTRO</a>
             </div>
-            <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="./dashboard.html" class="smoothScroll">HOME</a></li>
-                    <li><a href="./gallary.html" class="smoothScroll">FOOD GALLERY</a></li>
-                    <li><a href="./menu.html" class="smoothScroll">Menu</a></li>
-                    <li><a href="./chefs.html" class="smoothScroll">TEAM</a></li>
-                    <li><a href="./contact.html" class="smoothScroll">CONTACT</a></li>
-                    <li><a href="/index.html" class="smoothScroll">SIGN OUT</a></li>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./dashboard.html">HOME</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/index.html">SIGN OUT</a>
+                    </li>
                 </ul>
+            </div>
+    </nav>
+
+    <section id="menu" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h1 class="display-4">Menu</h1>
+                    <hr class="my-4">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="row" id="menu-items"></div>
+                </div>
             </div>
         </div>
     </section>
-    <section id="gallery" class="parallax-section">
+
+    <section id="order-summary" class="py-5">
         <div class="container">
-            <div class="row">
-                <div class="col-md-offset-2 col-md-8 col-sm-12 text-center">
-                    <h1 class="heading">Food Gallery</h1>
-                    <hr>
+            <div class="menu-content">
+                <div class="mb-3">
+                    <strong>Cart Items:</strong>
+                    <ul id="cart-items"></ul>
                 </div>
-                <div class="col-md-4 col-sm-4 wow fadeInUp" data-wow-delay="0.3s">
-                    <a href="/images/gallery-img1.jpg" data-lightbox-gallery="zenda-gallery"><img src="/images/gallery-img1.jpg" alt="gallery img"></a>
-                    <div>
-                        <h3>Lemon-Rosemary Prawn</h3>
-                        <span>Seafood / Shrimp / Lemon</span>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="mb-4">Order Summary</h2>
+                    <div class="mb-3">
+                        <strong>Total Items:</strong> <span id="total-items">0</span>
                     </div>
-                    <a href="/images/gallery-img2.jpg" data-lightbox-gallery="zenda-gallery"><img src="/images/gallery-img2.jpg" alt="gallery img"></a>
-                    <div>
-                        <h3>Lemon-Rosemary Vegetables</h3>
-                        <span>Tomato / Rosemary / Lemon</span>
+
+                    <div class="mb-3">
+                        <strong>Total Price:</strong> $<span id="total-price">0.00</span>
                     </div>
-                </div>
-                <div class="col-md-4 col-sm-4 wow fadeInUp" data-wow-delay="0.6s">
-                    <a href="/images/gallery-img3.jpg" data-lightbox-gallery="zenda-gallery"><img src="/images/gallery-img3.jpg" alt="gallery img"></a>
-                    <div>
-                        <h3>Lemon-Rosemary Bakery</h3>
-                        <span>Bread / Rosemary / Orange</span>
+                    <div class="mb-3">
+                        <strong>Payment Method:</strong> <span> <h6>Cash On Delivery - <span style="color: green;"> Available</span></h6>
+                        </span> <span> <h6>Visa / Master - <span style="color: rgb(226, 25, 25);"> Not Available</span></h6>
+                        </span>
                     </div>
-                </div>
-                <div class="col-md-4 col-sm-4 wow fadeInUp" data-wow-delay="0.9s">
-                    <a href="/images/gallery-img4.jpg" data-lightbox-gallery="zenda-gallery"><img src="/images/gallery-img4.jpg" alt="gallery img"></a>
-                    <div>
-                        <h3>Lemon-Rosemary Salad</h3>
-                        <span>Chicken / Rosemary / Green</span>
-                    </div>
-                    <a href="/images/gallery-img5.jpg" data-lightbox-gallery="zenda-gallery"><img src="/images/gallery-img5.jpg" alt="gallery img"></a>
-                    <div>
-                        <h3>Lemon-Rosemary Pizza</h3>
-                        <span>Pasta / Rosemary / Green</span>
+                    <button id="checkout-btn" class="btn btn-primary btn-block" disabled>Checkout</button>
+                    <div class="mb-3">
+                        <button id="clear-cart-btn" class="btn btn-danger btn-block">Clear Cart</button>
                     </div>
                 </div>
             </div>
@@ -140,12 +152,28 @@
         </div>
     </section>
     <script src="/js/jquery.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
     <script src="/js/jquery.parallax.js"></script>
     <script src="/js/smoothscroll.js"></script>
     <script src="/js/nivo-lightbox.min.js"></script>
     <script src="/js/wow.min.js"></script>
     <script src="/js/custom.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <!-- Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Firebase JavaScript SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+
+    <!-- Your Firebase Config -->
+    <script src="/firebase/firebaseConfig.js"></script>
+
+    <!-- Your Custom JS -->
+    <script src="/js/menu.js"></script>
+
 </body>
 
 </html>

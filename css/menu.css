@@ -1,0 +1,72 @@
+body {
+    overflow-y: scroll;
+}
+
+#menu {
+    margin-bottom: 100px;
+    /* Adjust this value based on your content */
+}
+
+nav {
+    background-color: #ffffff;
+}
+
+section#menu {
+    background-color: #ffffff;
+}
+
+section#order-summary {
+    background-color: #ffffff;
+    padding: 20px;
+}
+
+section#order-summary .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+section#order-summary .menu-content,
+section#order-summary .card {
+    width: 48%;
+}
+
+section#order-summary .card {
+    margin-left: 2%;
+}
+
+section#order-summary .card-body {
+    text-align: center;
+}
+
+section#order-summary .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+section#order-summary .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+section#order-summary .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+section#order-summary .btn-danger:hover {
+    background-color: #bd2130;
+    border-color: #bd2130;
+}
+
+@media (max-width: 768px) {
+    section#order-summary .container {
+        flex-direction: column;
+        align-items: center;
+    }
+    section#order-summary .menu-content,
+    section#order-summary .card {
+        width: 100%;
+        margin-left: 0;
+    }
+}
