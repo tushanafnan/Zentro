@@ -12,8 +12,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const cartItemsList = document.getElementById('cart-items');
     const checkoutBtn = document.getElementById('checkout-btn');
 
+    // Add this line to get the clear cart button element
+    const clearCartBtn = document.getElementById('clear-cart-btn');
+
     // Initialize the cart as an empty array
     let cart = [];
+
+    // Get the current user
+    let currentUser;
+
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            // User is signed in
+            currentUser = user;
+        } else {
+            // No user is signed in
+            currentUser = null;
+        }
+    });
 
     // Listen for changes in the menu and update the UI
     menuRef.on('value', (snapshot) => {
@@ -32,13 +48,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const menuItemElement = document.createElement('div');
             menuItemElement.className = 'col-md-6 col-sm-6';
             menuItemElement.innerHTML = `
-            <h4>${item.name}</h4>
-            <h3><span>$${item.price.toFixed(2)}</span></h3>
-            <h5>${item.description}</h5>
-            <p class="card-text"><strong>Rating:</strong> ${getStarsHtml(item.stars)}</p>
-            <button class="add-to-cart-btn" data-id="${itemId}">Add to Cart</button>
-            <a href="/stracture/review.html"><button class="add-to-cart-btn">Review</button></a>
-        `;
+                <h4>${item.name}</h4>
+                <h3><span>$${item.price.toFixed(2)}</span></h3>
+                <h5>${item.description}</h5>
+                <p class="card-text"><strong>Rating:</strong> ${getStarsHtml(item.stars)}</p>
+                <button class="add-to-cart-btn" data-id="${itemId}">Add to Cart</button>
+                <a href="/stracture/review.html"><button class="add-to-cart-btn">Review</button></a>
+            `;
             menuItemsContainer.appendChild(menuItemElement);
         }
 
@@ -82,17 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Function to render the cart
-    // Function to render the cart
     function renderCart() {
-        // Get the cart items list container
-        const cartItemsList = document.getElementById('cart-items');
-
-        if (!cartItemsList) {
-            console.error('Error: Cart items list element not found.');
-            return;
-        }
-
-        // Clear the existing content
         cartItemsList.innerHTML = '';
 
         // Initialize total items and total price
@@ -113,21 +119,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const totalItemsElement = document.getElementById('total-items');
         const totalPriceElement = document.getElementById('total-price');
 
-        if (!totalItemsElement || !totalPriceElement) {
-            console.error('Error: Total items or total price element not found.');
-            return;
-        }
-
         totalItemsElement.textContent = totalItems;
         totalPriceElement.textContent = totalPrice.toFixed(2);
 
         // Enable or disable the checkout button based on the cart content
         checkoutBtn.disabled = cart.length === 0;
     }
-
-
-    // Add this line to get the clear cart button element
-    const clearCartBtn = document.getElementById('clear-cart-btn');
 
     // Add event listener for the "Clear Cart" button
     clearCartBtn.addEventListener('click', clearCart);
@@ -141,43 +138,19 @@ document.addEventListener('DOMContentLoaded', function() {
         renderCart();
     }
 
-    // Function to render the cart
-    function renderCart() {
-        cartItemsList.innerHTML = '';
-
-        // Initialize total items and total price
-        let totalItems = 0;
-        let totalPrice = 0;
-
-        cart.forEach(item => {
-            const cartItemElement = document.createElement('li');
-            cartItemElement.textContent = `${item.name} - $${(item.price * item.quantity).toFixed(2)} x${item.quantity}`;
-            cartItemsList.appendChild(cartItemElement);
-
-            // Update total items and total price
-            totalItems += item.quantity;
-            totalPrice += item.price * item.quantity;
-        });
-
-        // Update the order summary in real-time
-        const totalItemsElement = document.getElementById('total-items');
-        const totalPriceElement = document.getElementById('total-price');
-
-        totalItemsElement.textContent = totalItems;
-        totalPriceElement.textContent = totalPrice.toFixed(2);
-
-        // Enable or disable the checkout button based on the cart content
-        checkoutBtn.disabled = cart.length === 0;
-    }
-
-
-
     // Event listener for the checkout button
     if (checkoutBtn) {
         checkoutBtn.addEventListener('click', checkout);
     }
 
+    // Function to handle the checkout process
     function checkout() {
+        // Check if the user is authenticated
+        if (!currentUser) {
+            alert('You need to be signed in to place an order.');
+            return;
+        }
+
         // Check if the cart is not empty
         if (cart.length === 0) {
             alert('Your cart is empty. Add items before checking out.');
@@ -197,6 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Create an order object with cart details
         const order = {
             timestamp: timestamp,
+            userId: currentUser.uid, // Add the user ID to the order
             items: cart.map(item => ({
                 id: item.id,
                 name: item.name,
@@ -219,11 +193,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Display order summary
                 alert(`Order placed successfully!\nTotal Items: ${totalItems}\nTotal Amount: $${totalAmount}`);
             })
+            .then(() => {
+                // Move to track.html after 1 second
+                setTimeout(() => {
+                    window.location.href = '/stracture/track.html';
+                }, 1000);
+            })
             .catch(error => {
                 // Handle errors
                 console.error('Error placing order:', error.message);
                 alert('Error placing order. Please try again.');
             });
+
     }
 
     // Function to calculate the total cost of items in the cart

@@ -11,7 +11,7 @@ const signupForm = document.getElementById('signup-form');
 const signupMessage = document.getElementById('signup-message');
 
 // Add an event listener to the form for sign-up
-signupForm.addEventListener('submit', (e) => {
+signupForm.addEventListener('submit', async(e) => {
     e.preventDefault();
 
     const name = nameInput.value;
@@ -20,37 +20,34 @@ signupForm.addEventListener('submit', (e) => {
     const password = passwordInput.value;
     const phone = phoneInput.value;
 
-    // Sign up with email and password
-    firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            // User is signed up.
-            const user = userCredential.user;
+    try {
+        // Sign up with email and password
+        const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
 
-            // Get the current count of users
-            const usersRef = firebase.database().ref('users');
-            usersRef.once('value')
-                .then(snapshot => {
-                    const userCount = snapshot.numChildren() + 1;
+        // User is signed up.
+        const user = userCredential.user;
 
-                    // Store additional user data in Firebase Realtime Database with a custom index
-                    const newUserRef = usersRef.child(userCount);
-                    return newUserRef.set({
-                        name: name,
-                        username: username,
-                        email: email,
-                        phone: phone,
-                        // Add other user data as needed
-                    });
-                })
-                .then(() => {
-                    // Redirect to the dashboard or perform other actions
-                    window.location.href = '/stracture/dashboard.html';
-                })
-                .catch((error) => {
-                    // Handle errors here (e.g., display an error message)
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    signupMessage.textContent = `Sign-up Error: ${errorMessage}`;
-                });
+        // Get the current count of users
+        const usersRef = firebase.database().ref('users');
+        const snapshot = await usersRef.once('value');
+        const userCount = snapshot.numChildren() + 1;
+
+        // Store additional user data in Firebase Realtime Database with a custom index
+        const newUserRef = usersRef.child(user.uid);
+        await newUserRef.set({
+            name: name,
+            username: username,
+            email: email,
+            phone: phone,
+            // Add other user data as needed
         });
+
+        // Redirect to the dashboard or perform other actions
+        window.location.href = '/stracture/dashboard.html';
+    } catch (error) {
+        // Handle errors here (e.g., display an error message)
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        signupMessage.textContent = `Sign-up Error: ${errorMessage}`;
+    }
 });
