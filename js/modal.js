@@ -1,14 +1,16 @@
 // JavaScript
+document.addEventListener('DOMContentLoaded', function() {
+    const openModalButton = document.getElementById("openModalButton");
+    const closeModalButton = document.getElementById("closeModal");
 
-// Function to open the modal
-function openModal() {
-    const modal = document.getElementById("modal");
-    const modalText = document.getElementById("modalText");
+    function openModal() {
+        const modal = document.getElementById("modal");
+        const modalText = document.getElementById("modalText");
 
-    modal.style.display = "block";
+        modal.style.display = "block";
 
-    // The simplified and professional text with styles
-    modalText.innerHTML = `
+        // The simplified and professional text with styles
+        modalText.innerHTML = `
         <h1>Zentro - Innovative Food Ordering</h1>
         <p>Zentro is an advanced cloud kitchen system developed by Team Anonymous, designed to offer professional and efficient food ordering experiences. With Zentro, you can easily order delicious cuisine from the comfort of your home, thanks to our innovative full-stack solution.</p>
 
@@ -28,18 +30,15 @@ function openModal() {
 
 
         <p>In a fast-paced world, Zentro stands as a leader in the food industry, providing professional and productivity-driven solutions. Join us on this culinary journey and experience the future of food ordering. Taste the convenience with Zentro!</p>
-    `;
-}
+        `;
+    }
 
-// Function to close the modal
-function closeModal() {
-    const modal = document.getElementById("modal");
-    modal.style.display = "none";
-}
+    function closeModal() {
+        const modal = document.getElementById("modal");
+        modal.style.display = "none";
+    }
 
-// Event listeners
-const openModalButton = document.getElementById("openModalButton");
-const closeModalButton = document.getElementById("closeModal");
-
-openModalButton.addEventListener("click", openModal);
-closeModalButton.addEventListener("click", closeModal);
+    // Event listeners
+    openModalButton.addEventListener("click", openModal);
+    closeModalButton.addEventListener("click", closeModal);
+});

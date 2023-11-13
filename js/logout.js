@@ -2,11 +2,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize Firebase after including the configuration
     firebase.initializeApp(firebaseConfig);
 
-    // Assuming your logout button has an ID of 'logoutBtn'
-    const logoutBtn = document.getElementById('logoutBtn');
+    // Assuming your logout link has an ID of 'logoutLink'
+    const logoutLink = document.getElementById('logoutLink');
 
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', function() {
+    if (logoutLink) {
+        logoutLink.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default behavior of the anchor link
             firebase.auth().signOut().then(function() {
                 console.log('User signed out successfully.');
                 // Redirect to index.html after signing out
@@ -16,6 +17,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     } else {
-        console.error('Logout button not found.');
+        console.error('Logout link not found.');
     }
 });

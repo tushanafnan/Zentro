@@ -1,0 +1,51 @@
+      /* Add a transparent background to the navbar */
+      
+      #navigation {
+          background-color: rgba(255, 255, 255, 0);
+          /* Adjust the last value (alpha) for transparency */
+          border: none;
+      }
+      /* Style the navbar brand text */
+      
+      #navigation .navbar-brand {
+          color: #fff;
+          /* Set the color of the brand text */
+      }
+      /* Style the navbar links */
+      
+      #navigation .navbar-nav a {
+          color: #fff;
+          /* Set the color of the links */
+      }
+      /* Style the logout button */
+      
+      #navigation #logoutBtn {
+          color: #fff;
+          /* Set the color of the button text */
+          background-color: transparent;
+          /* Set the button background to transparent */
+          border: 1px solid #fff;
+          /* Add a border to the button */
+          margin-left: 15px;
+          /* Adjust the margin as needed */
+      }
+      /* Change the color of the navbar links when hovered */
+      
+      #navigation .navbar-nav a:hover {
+          color: #ccc;
+          /* Set the hover color */
+      }
+      
+      .logout-button {
+          background-color: #d9534f;
+          color: #fff;
+          padding: 10px 20px;
+          border: none;
+          cursor: pointer;
+          border-radius: 5px;
+      }
+      
+      .logout-button:hover {
+          background-color: #c9302c;
+          /* Darker shade on hover */
+      }

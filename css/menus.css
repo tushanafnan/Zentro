@@ -1,0 +1,36 @@
+#menu {
+    background-color: #fff;
+    /* Set your desired background color */
+    padding: 80px 0;
+    /* Adjust the padding as needed */
+}
+
+.menu-hr {
+    border-top: 2px solid #333;
+    /* Set the menu section's top border color */
+    width: 50px;
+    /* Set the border width */
+}
+
+.menu-item {
+    margin-bottom: 30px;
+}
+
+.menu-item h4 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.menu-item p {
+    font-size: 16px;
+    color: #777;
+    /* Set the text color */
+    margin-bottom: 15px;
+}
+
+.menu-price {
+    display: block;
+    font-size: 20px;
+    color: #e44d26;
+    /* Set the price color */
+}

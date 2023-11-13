@@ -1,16 +1,21 @@
 /* styles.css */
 
 #openModalButton {
-    background-color: #33ae95;
+    background-color: rgba(0, 0, 0, 0);
     color: #fff;
     padding: 10px 20px;
     border: none;
     cursor: pointer;
     border-radius: 5px;
+    margin-top: 10px;
+    /* Adjust the margin-top as needed */
+    transition: background-color 0.3s ease;
+    /* Add transition for smooth hover effect */
 }
 
 #openModalButton:hover {
-    background-color: #0056b3;
+    background-color: rgba(4, 4, 4, 0.164);
+    /* Adjust the alpha (transparency) value as needed */
 }
 
 .modal {

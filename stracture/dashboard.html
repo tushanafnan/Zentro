@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/modal.css">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/css/nav.css">
+    <link rel="stylesheet" href="/css/menus.css">
 
 </head>
 
@@ -29,14 +31,15 @@
     </section>
 
     <!-- navigation section -->
+
     <section id="navigation" class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
                 <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-				<span class="icon icon-bar"></span>
-				<span class="icon icon-bar"></span>
-				<span class="icon icon-bar"></span>
-			</button>
+                    <span class="icon icon-bar"></span>
+                    <span class="icon icon-bar"></span>
+                    <span class="icon icon-bar"></span>
+                </button>
                 <a href="/stracture/dashboard.html" class="navbar-brand">ZENTRO</a>
             </div>
             <div class="collapse navbar-collapse">
@@ -46,13 +49,11 @@
                     <li><a href="./menu.html" class="smoothScroll">MENU</a></li>
                     <li><a href="./track.html" class="smoothScroll">TRACK ORDER</a></li>
                     <li><a href="./contact.html" class="smoothScroll">CONTACT</a></li>
-                    <button id="logoutBtn">LOG OUT</button>
+                    <li> <a href="#" id="logoutLink">LOG OUT</a></li>
                 </ul>
             </div>
         </div>
     </section>
-
-
     <!-- home section -->
     <section id="home" class="parallax-section">
         <div class="container">
@@ -60,7 +61,7 @@
                 <div class="col-md-12 col-sm-12">
                     <h1>ZENTRO RESTAURANT</h1>
                     <h2>ADVANCE CLOUD KITCHEN</h2>
-                    <h4> <button id="openModalButton">LEARN MORE</button> </h4>
+                    <a href="#" id="openModalButton" class="smoothScroll btn btn-default">LEARN MORE</a>
                     <div id="modal" class="modal">
                         <div class="modal-content">
                             <span class="close" id="closeModal">&times;</span>
@@ -73,6 +74,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        </div>
+        </div>
         </div>
     </section>
 
@@ -125,45 +129,69 @@
     <section id="menu" class="parallax-section">
         <div class="container">
             <div class="row">
-                <div class="col-md-offset-2 col-md-8 col-sm-12 text-center">
-                    <h1 class="heading">Menu</h1>
-                    <hr>
+                <div class="col-md-12 text-center">
+                    <h1 class="heading">Our Delicious Menu</h1>
+
+                    <hr class="menu-hr">
+                    <div class="text-center mt-4">
+                        <!-- Add margin-top (mt-4) for spacing -->
+                        <a href="/stracture/menu.html" class="smoothScroll btn btn-primary btn-lg">Order Now</a>
+                    </div>
+
                 </div>
-                <div class="col-md-6 col-sm-6">
-                    <h4>Lemon-Rosemary Vegetable ................ <span>$20.50</span></h4>
-                    <h5>Chicken / Rosemary / Lemon</h5>
+                <div class="col-md-6">
+                    <div class="menu-item">
+                        <h4>Lemon-Rosemary Vegetable</h4>
+                        <p>Chicken / Rosemary / Lemon</p>
+                        <span class="menu-price">$20.50</span>
+                    </div>
+                    <div class="menu-item">
+                        <h4>Lemon-Rosemary Meat</h4>
+                        <p>Meat / Rosemary / Lemon</p>
+                        <span class="menu-price">$30.50</span>
+                    </div>
+                    <div class="menu-item">
+                        <h4>Lemon-Rosemary Pork</h4>
+                        <p>Pork / Tooplate / Lemon</p>
+                        <span class="menu-price">$40.75</span>
+                    </div>
+                    <div class="menu-item">
+                        <h4>Orange-Rosemary Salad</h4>
+                        <p>Salad / Rosemary / Orange</p>
+                        <span class="menu-price">$55.00</span>
+                    </div>
                 </div>
-                <div class="col-md-6 col-sm-6">
-                    <h4>Lemon-Rosemary Meat ........................... <span>$30.50</span></h4>
-                    <h5>Meat / Rosemary / Lemon</h5>
+                <div class="col-md-6">
+                    <div class="menu-item">
+                        <h4>Lemon-Rosemary Squid</h4>
+                        <p>Squid / Rosemary / Lemon</p>
+                        <span class="menu-price">$65.00</span>
+                    </div>
+                    <div class="menu-item">
+                        <h4>Orange-Rosemary Shrimp</h4>
+                        <p>Shrimp / Rosemary / Orange</p>
+                        <span class="menu-price">$70.50</span>
+                    </div>
+                    <div class="menu-item">
+                        <h4>Lemon-Rosemary Prawn</h4>
+                        <p>Chicken / Rosemary / Lemon</p>
+                        <span class="menu-price">$110.75</span>
+                    </div>
+                    <div class="menu-item">
+                        <h4>Lemon-Rosemary Seafood</h4>
+                        <p>Seafood / Rosemary / Lemon</p>
+                        <span class="menu-price">$220.50</span>
+                    </div>
+
                 </div>
-                <div class="col-md-6 col-sm-6">
-                    <h4>Lemon-Rosemary Pork ........................ <span>$40.75</span></h4>
-                    <h5>Pork / Tooplate / Lemon</h5>
-                </div>
-                <div class="col-md-6 col-sm-6">
-                    <h4>Orange-Rosemary Salad .......................... <span>$55.00</span></h4>
-                    <h5>Salad / Rosemary / Orange</h5>
-                </div>
-                <div class="col-md-6 col-sm-6">
-                    <h4>Lemon-Rosemary Squid ...................... <span>$65.00</span></h4>
-                    <h5>Squid / Rosemary / Lemon</h5>
-                </div>
-                <div class="col-md-6 col-sm-6">
-                    <h4>Orange-Rosemary Shrimp ........................ <span>$70.50</span></h4>
-                    <h5>Shrimp / Rosemary / Orange</h5>
-                </div>
-                <div class="col-md-6 col-sm-6">
-                    <h4>Lemon-Rosemary Prawn ................... <span>$110.75</span></h4>
-                    <h5>Chicken / Rosemary / Lemon</h5>
-                </div>
-                <div class="col-md-6 col-sm-6">
-                    <h4>Lemon-Rosemary Seafood ..................... <span>$220.50</span></h4>
-                    <h5>Seafood / Rosemary / Lemon</h5>
-                </div>
+
             </div>
+
         </div>
+
     </section>
+
+
 
 
     <!-- team section -->
@@ -290,6 +318,15 @@
             </div>
         </div>
     </section>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        // Add JavaScript to toggle the menu for small screens
+        document.getElementById('toggleBtn').addEventListener('click', function() {
+            document.querySelector('.lg\\:hidden').classList.toggle('hidden');
+        });
+    </script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
