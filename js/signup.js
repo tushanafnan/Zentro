@@ -3,7 +3,7 @@ firebase.initializeApp(firebaseConfig);
 
 // Get references to the sign-up form elements
 const nameInput = document.getElementById('name');
-const usernameInput = document.getElementById('signup-username');
+const addressInput = document.getElementById('signup-address');
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('signup-password');
 const phoneInput = document.getElementById('phone');
@@ -15,7 +15,7 @@ signupForm.addEventListener('submit', async(e) => {
     e.preventDefault();
 
     const name = nameInput.value;
-    const username = usernameInput.value;
+    const address = addressInput.value;
     const email = emailInput.value;
     const password = passwordInput.value;
     const phone = phoneInput.value;
@@ -30,13 +30,11 @@ signupForm.addEventListener('submit', async(e) => {
         // Get the current count of users
         const usersRef = firebase.database().ref('users');
         const snapshot = await usersRef.once('value');
-        const userCount = snapshot.numChildren() + 1;
-
         // Store additional user data in Firebase Realtime Database with a custom index
         const newUserRef = usersRef.child(user.uid);
         await newUserRef.set({
             name: name,
-            username: username,
+            address: address,
             email: email,
             phone: phone,
             // Add other user data as needed
