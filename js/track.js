@@ -24,7 +24,7 @@ firebase.auth().onAuthStateChanged(function(user) {
                     // Check if the buttons are disabled and update UI accordingly
                     const cancelDisabled = order.disabledButtons && order.disabledButtons.cancelOrder;
                     const receivedDisabled = order.disabledButtons && order.disabledButtons.markAsReceived;
-
+                    const orderTime = new Date(order.timestamp).toLocaleString();
                     // Fetch additional user details from the "users" collection
                     const userRef = firebase.database().ref('users').child(userId);
                     userRef.once('value', function(userSnapshot) {
@@ -43,6 +43,8 @@ firebase.auth().onAuthStateChanged(function(user) {
                                 <p class="card-text"><strong>Customer Phone:</strong> ${userData.phone}</p>
                                 <p class="card-text"><strong>Total Items:</strong> ${order.items.length}</p>
                                 <p class="card-text"><strong>Total Price:</strong> $${order.total}</p>
+                                <p class="card-text"><strong>Order Time:</strong> ${orderTime}</p>
+                            
                                 <p class="card-text order-status" ><strong>Order Status: </strong> <strong style="color: ${getStatusColor(orderStatus)};"> ${orderStatus} </strong></p>
                                 <h6 class="card-subtitle mb-2 text-muted">Ordered Items:</h6>
                             </div>
