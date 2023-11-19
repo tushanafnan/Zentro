@@ -4,25 +4,36 @@
 <head>
     <title>Zentro | Login</title>
     <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <body>
-    <div id="login-container">
-        <h1>Login</h1>
+
+    <div class="wrapper">
         <form id="login-form">
-            <label for="email">Email:</label>
-            <input type="text" id="email" name="email" required><br>
+            <h1>Login</h1>
+            <div class="input-box">
+                <input type="text" id="email" placeholder="Email" required>
+                <i class='bx bxs-user-plus'></i>
+            </div>
+            <div class="input-box">
+                <input type="password" id="password" placeholder="Password" required>
+                <i class='bx bxs-lock-alt'></i>
+            </div>
+            <div class="remember-forgot">
+                <label> <input type ="checkbox"> Remember me </label>
+                <a href="#"> Forgot password?</a>
+            </div>
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required><br>
+            <button id="btn" type="submit" class="btn">Login</button>
 
-            <button id="buttonn" type="submit">Login</button>
-            <a href="./signup.html">
-                <button id="btn" type="button">Sign Up</button>
-            </a>
-
+            <div class="register-link">
+                <p>Don't have an account? <a href="./signup.html">Register</a> </p>
+            </div>
         </form>
-        <p id="message"></p>
+    </div>
+    <p id="message"></p>
     </div>
 
 
