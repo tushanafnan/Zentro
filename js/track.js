@@ -11,7 +11,6 @@ firebase.auth().onAuthStateChanged(function(user) {
         console.log('Authenticated User ID:', userId);
 
         // Retrieve and display order details for the user
-        // Inside the onAuthStateChanged listener
         ordersRef.orderByChild('userId').equalTo(userId).on('value', function(snapshot) {
             orderDetailsContainer.innerHTML = ''; // Clear previous order details
 
@@ -44,7 +43,7 @@ firebase.auth().onAuthStateChanged(function(user) {
                                 <p class="card-text"><strong>Customer Phone:</strong> ${userData.phone}</p>
                                 <p class="card-text"><strong>Total Items:</strong> ${order.items.length}</p>
                                 <p class="card-text"><strong>Total Price:</strong> $${order.total}</p>
-                                <p class="card-text" style="color: ${getStatusColor(orderStatus)};"><strong>Order Status:</strong> ${orderStatus}</p>
+                                <p class="card-text order-status" ><strong>Order Status: </strong> <strong style="color: ${getStatusColor(orderStatus)};"> ${orderStatus} </strong></p>
                                 <h6 class="card-subtitle mb-2 text-muted">Ordered Items:</h6>
                             </div>
                         `;
@@ -89,37 +88,17 @@ firebase.auth().onAuthStateChanged(function(user) {
 });
 
 // Add event listeners for the buttons dynamically
-document.addEventListener('click', function(event) {
+document.addEventListener('click', async function(event) {
     if (event.target && event.target.classList.contains('cancel-order-btn')) {
         const orderId = event.target.dataset.orderId;
-        cancelOrder(orderId);
-        // Disable the "Received" button
-        disableButton(orderId, 'received-btn');
+        await cancelOrder(orderId);
     } else if (event.target && event.target.classList.contains('received-btn')) {
         const orderId = event.target.dataset.orderId;
-        markAsReceived(orderId);
-        // Disable the "Cancel Order" button
-        disableButton(orderId, 'cancel-order-btn');
+        await markAsReceived(orderId);
     } else if (event.target && event.target.classList.contains('delete-order-btn')) {
         deleteOrder(event.target.dataset.orderId);
     }
 });
-
-// Function to get the order status from the UI element
-function getOrderStatus(element) {
-    return element.innerText.split(':')[1].trim();
-}
-
-// Function to disable a button based on its class and order ID
-function disableButton(orderId, buttonClass) {
-    const orderElement = document.getElementById(orderId);
-    if (orderElement) {
-        const button = orderElement.querySelector(`.${buttonClass}`);
-        if (button) {
-            button.disabled = true;
-        }
-    }
-}
 
 // Function to get status color based on order status
 function getStatusColor(status) {
@@ -135,12 +114,13 @@ function getStatusColor(status) {
     }
 }
 
-function deleteOrder(orderId) {
+// Function to delete an order from both UI and database
+async function deleteOrder(orderId) {
     const orderRef = ordersRef.child(orderId);
 
     if (confirm('Are you sure you want to delete this order?')) {
         // Remove the order data from the database
-        orderRef.remove()
+        await orderRef.remove()
             .then(() => {
                 console.log('Order deleted successfully.');
 
@@ -158,28 +138,56 @@ function deleteOrder(orderId) {
     }
 }
 
-// Function to update the order status in the database
-function updateOrderStatus(orderId, newStatus) {
+// Function to update the order status in the database and disable buttons in the UI
+async function updateOrderStatusAndDisableButtons(orderId, newStatus) {
     const orderRef = ordersRef.child(orderId);
-    orderRef.update({ status: newStatus });
+    const buttonsToDisable = { cancelOrder: true, markAsReceived: true };
+    await orderRef.update({ status: newStatus, disabledButtons: buttonsToDisable });
+    disableButtonsLocally(orderId, newStatus);
 }
 
 // Function to cancel an order
-function cancelOrder(orderId) {
-    const buttonsToDisable = { cancelOrder: true, markAsReceived: true };
-    updateOrderStatus(orderId, 'Cancelled');
-    updateDisabledButtons(orderId, buttonsToDisable);
+async function cancelOrder(orderId) {
+    await updateOrderStatusAndDisableButtons(orderId, 'Cancelled');
 }
 
 // Function to mark an order as received
-function markAsReceived(orderId) {
-    const buttonsToDisable = { cancelOrder: true, markAsReceived: true };
-    updateOrderStatus(orderId, 'Delivered');
-    updateDisabledButtons(orderId, buttonsToDisable);
+async function markAsReceived(orderId) {
+    await updateOrderStatusAndDisableButtons(orderId, 'Delivered');
 }
 
-// Function to update the disabled buttons in the database
-function updateDisabledButtons(orderId, buttons) {
+// Function to update the order status in the UI and database
+async function updateOrderStatusLocally(orderId, newStatus) {
     const orderRef = ordersRef.child(orderId);
-    orderRef.child('disabledButtons').update(buttons);
+    await orderRef.update({ status: newStatus });
+
+    const orderElement = document.getElementById(orderId);
+    if (orderElement) {
+        const statusElement = orderElement.querySelector('.order-status');
+        if (statusElement) {
+            // Change color based on the new status
+            statusElement.style.color = getStatusColor(newStatus);
+            // Disable buttons based on the new status
+            disableButtonsLocally(orderId, newStatus);
+
+            // Update the status text in the UI
+            statusElement.innerText = `Order Status: ${newStatus}`;
+        }
+    }
+}
+
+// Function to disable buttons locally based on the order status
+function disableButtonsLocally(orderId, status) {
+    const orderElement = document.getElementById(orderId);
+    if (orderElement) {
+        const cancelBtn = orderElement.querySelector('.cancel-order-btn');
+        const receivedBtn = orderElement.querySelector('.received-btn');
+
+        if (cancelBtn) {
+            cancelBtn.disabled = status !== 'Preparing'; // Disable if not in 'Preparing' status
+        }
+        if (receivedBtn) {
+            receivedBtn.disabled = status !== 'Preparing'; // Disable if not in 'Preparing' status
+        }
+    }
 }
