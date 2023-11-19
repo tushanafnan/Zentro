@@ -1,0 +1,11 @@
+.wrapper {
+    background: url('/images/home-bg.jpg') no-repeat;
+    background-size: cover;
+    /* Added property for responsiveness */
+    background-position: center center;
+}
+
+.bg-light-opacity {
+    background-color: rgba(255, 255, 255, 0.68);
+    /* Adjust the opacity as needed */
+}

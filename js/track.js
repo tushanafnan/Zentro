@@ -33,7 +33,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 
                         const orderElement = document.createElement('div');
                         orderElement.id = childSnapshot.key; // Set a unique ID for the order element
-                        orderElement.className = 'card mb-3';
+                        orderElement.className = 'card mb-3 bg-light-opacity';
                         orderElement.innerHTML = `
                             <div class="card-body">
                                 <h5 class="card-title">Order ID: ${childSnapshot.key}</h5>
@@ -57,7 +57,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 
                         order.items.forEach(item => {
                             const orderedItemElement = document.createElement('li');
-                            orderedItemElement.className = 'list-group-item';
+                            orderedItemElement.className = 'list-group-item bg-light-opacity';
                             orderedItemElement.innerHTML = `
                                 <p><strong>${item.name}</strong></p>
                                 <p><strong>Price:</strong> $${item.price.toFixed(2)}</p>
