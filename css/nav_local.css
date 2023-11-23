@@ -1,0 +1,91 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: rgba(0, 0, 0, 0.502);
+}
+
+.custom-navbar {
+    background-color: rgba(0, 0, 0, 0.502);
+    /* Use rgba for transparency in background */
+    color: rgba(255, 255, 255, 0.9);
+    /* Use rgba for transparency in text color */
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.502);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.custom-navbar-brand {
+    color: rgb(255, 255, 255);
+    /* Use rgba for transparency in text color */
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.custom-navbar-toggler {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: rgb(255, 255, 255);
+    /* Use rgba for transparency in text color */
+    display: none;
+}
+
+.custom-navbar-toggler:hover {
+    color: rgba(0, 0, 0, 0.1);
+    /* Use rgba for transparency in hover text color */
+}
+
+.custom-navbar-nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+}
+
+.custom-nav-item {
+    margin-left: 20px;
+}
+
+.custom-nav-link {
+    color: rgb(255, 255, 255);
+    /* Use rgba for transparency in text color */
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.custom-nav-link:hover {
+    color: rgb(255, 255, 255);
+    /* Use rgba for transparency in hover text color */
+}
+
+
+/* Responsive styles */
+
+@media (max-width: 768px) {
+    .custom-navbar {
+        align-items: center;
+    }
+    .custom-navbar-toggler {
+        display: block;
+    }
+    .custom-navbar-nav {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: rgb(156, 17, 17);
+        order: 3;
+    }
+    .custom-navbar.active .custom-navbar-nav {
+        display: flex;
+    }
+}
