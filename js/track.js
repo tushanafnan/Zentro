@@ -11,11 +11,13 @@ firebase.auth().onAuthStateChanged(function(user) {
         console.log('Authenticated User ID:', userId);
 
         // Retrieve and display order details for the user
-        ordersRef.orderByChild('userId').equalTo(userId).on('value', function(snapshot) {
+        ordersRef.orderByChild('userId').equalTo(userId).on('value', async function(snapshot) {
             orderDetailsContainer.innerHTML = ''; // Clear previous order details
 
             if (snapshot.exists()) {
-                snapshot.forEach(function(childSnapshot) {
+                const promises = [];
+
+                snapshot.forEach(async function(childSnapshot) {
                     const order = childSnapshot.val();
                     console.log('Order Data:', order);
 
@@ -25,67 +27,73 @@ firebase.auth().onAuthStateChanged(function(user) {
                     const cancelDisabled = order.disabledButtons && order.disabledButtons.cancelOrder;
                     const receivedDisabled = order.disabledButtons && order.disabledButtons.markAsReceived;
                     const orderTime = new Date(order.timestamp).toLocaleString();
+
                     // Fetch additional user details from the "users" collection
                     const userRef = firebase.database().ref('users').child(userId);
-                    userRef.once('value', function(userSnapshot) {
-                        const userData = userSnapshot.val();
-                        console.log('User Data:', userData);
+                    const userData = (await userRef.once('value')).val();
+                    console.log('User Data:', userData);
 
-                        const orderElement = document.createElement('div');
-                        orderElement.id = childSnapshot.key; // Set a unique ID for the order element
-                        orderElement.className = 'card mb-3 bg-light-opacity';
-                        orderElement.innerHTML = `
-                            <div class="card-body">
-                                <h5 class="card-title">Order ID: ${childSnapshot.key}</h5>
-                                <p class="card-text"><strong>Customer Name:</strong> ${userData.name}</p>
-                                <p class="card-text"><strong>Customer Address:</strong> ${userData.address}</p>
-                                <p class="card-text"><strong>Customer City:</strong> Dalian </p>
-                                <p class="card-text"><strong>Customer Phone:</strong> ${userData.phone}</p>
-                                <p class="card-text"><strong>Total Items:</strong> ${order.items.length}</p>
-                                <p class="card-text"><strong>Total Price:</strong> $${order.total}</p>
-                                <p class="card-text"><strong>Order Time:</strong> ${orderTime}</p>
-                            
-                                <p class="card-text order-status" ><strong>Order Status: </strong> <strong style="color: ${getStatusColor(orderStatus)};"> ${orderStatus} </strong></p>
-                                <h6 class="card-subtitle mb-2 text-muted">Ordered Items:</h6>
-                            </div>
+                    const orderElement = document.createElement('div');
+                    orderElement.id = childSnapshot.key; // Set a unique ID for the order element
+                    orderElement.className = 'card mb-3 bg-light-opacity';
+                    orderElement.innerHTML = `
+                        <div class="card-body">
+                            <h5 class="card-title">Order ID: ${childSnapshot.key}</h5>
+                            <p class="card-text"><strong>Customer Name:</strong> ${userData.name}</p>
+                            <p class="card-text"><strong>Customer Address:</strong> ${userData.address}</p>
+                            <p class="card-text"><strong>Customer City:</strong> Dalian </p>
+                            <p class="card-text"><strong>Customer Phone:</strong> ${userData.phone}</p>
+                            <p class="card-text"><strong>Total Items:</strong> ${order.items.length}</p>
+                            <p class="card-text"><strong>Total Price:</strong> $${order.total}</p>
+                            <p class="card-text"><strong>Order Time:</strong> ${orderTime}</p>
+
+                            <p class="card-text order-status" ><strong>Order Status: </strong> <strong style="color: ${getStatusColor(orderStatus)};"> ${orderStatus} </strong></p>
+                            <h6 class="card-subtitle mb-2 text-muted">Ordered Items:</h6>
+                        </div>
+                    `;
+
+                    orderDetailsContainer.appendChild(orderElement);
+
+                    const orderedItemsList = document.createElement('ul');
+                    orderedItemsList.className = 'list-group list-group-flush';
+
+                    order.items.forEach(item => {
+                        const orderedItemElement = document.createElement('li');
+                        orderedItemElement.className = 'list-group-item bg-light-opacity';
+                        orderedItemElement.innerHTML = `
+                            <p><strong>${item.name}</strong></p>
+                            <p><strong>Price:</strong> $${item.price.toFixed(2)}</p>
+                            <p><strong>Quantity:</strong> ${item.quantity}</p>
                         `;
-
-                        orderDetailsContainer.appendChild(orderElement);
-
-                        const orderedItemsList = document.createElement('ul');
-                        orderedItemsList.className = 'list-group list-group-flush';
-
-                        order.items.forEach(item => {
-                            const orderedItemElement = document.createElement('li');
-                            orderedItemElement.className = 'list-group-item bg-light-opacity';
-                            orderedItemElement.innerHTML = `
-                                <p><strong>${item.name}</strong></p>
-                                <p><strong>Price:</strong> $${item.price.toFixed(2)}</p>
-                                <p><strong>Quantity:</strong> ${item.quantity}</p>
-                            `;
-                            orderedItemsList.appendChild(orderedItemElement);
-                        });
-
-                        orderElement.appendChild(orderedItemsList);
-
-                        // Add "Cancel Order" and "Received" buttons with disabled status
-                        const buttonContainer = document.createElement('div');
-                        buttonContainer.className = 'mb-3';
-                        buttonContainer.innerHTML = `
-                            <button class="btn btn-danger cancel-order-btn" data-order-id="${childSnapshot.key}" ${cancelDisabled ? 'disabled' : ''}>Cancel Order</button>
-                            <button class="btn btn-success received-btn" data-order-id="${childSnapshot.key}" ${receivedDisabled ? 'disabled' : ''}>Received</button>
-                            <button class="btn btn-warning delete-order-btn" data-order-id="${childSnapshot.key}">Delete Order</button>
-                        `;
-                        orderElement.appendChild(buttonContainer);
+                        orderedItemsList.appendChild(orderedItemElement);
                     });
+
+                    orderElement.appendChild(orderedItemsList);
+
+                    // Add "Cancel Order" and "Received" buttons with disabled status
+                    const buttonContainer = document.createElement('div');
+                    buttonContainer.className = 'mb-3';
+                    buttonContainer.innerHTML = `
+                        <button class="btn btn-danger cancel-order-btn" data-order-id="${childSnapshot.key}" ${cancelDisabled ? 'disabled' : ''}>Cancel Order</button>
+                        <button class="btn btn-success received-btn" data-order-id="${childSnapshot.key}" ${receivedDisabled ? 'disabled' : ''}>Received</button>
+                        <button class="btn btn-warning delete-order-btn" data-order-id="${childSnapshot.key}">Delete Order</button>
+                    `;
+                    orderElement.appendChild(buttonContainer);
                 });
+
+                // Wait for all promises to resolve before doing anything else
+                await Promise.all(promises);
             } else {
                 orderDetailsContainer.innerHTML = '<p>No orders found.</p>';
             }
         });
     } else {
-        // No user is signed in, handle accordingly (redirect to login, show a message, etc.)
-        console.log('No user is signed in');
+        alert("No User Found, Please Login First!");
+
+        // Move to login after 1 second
+        setTimeout(() => {
+            window.location.href = '/stracture/login.html';
+        }, 1000);
     }
 });
 
